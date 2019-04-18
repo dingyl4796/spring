@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.dyl.mapper.MemberMapper">
+	<select id="findMembers" resultType="java.util.Map">
+		<![CDATA[
+			SELECT m.id,m.phone as cellphone,m.nic_name as nickName,m.QQ as qq,m.WeChat as wechat,m.WhatsApp as whatsapp,m.is_authentication as isAuthentication,
+			m.is_enterprise_member as isEnterpriseMember,m.is_project_member as isProjectMember,m.`status`,DATE_FORMAT(m.create_date,'%Y-%m-%d %H:%i:%s') as createDate
+			from member m
+			WHERE m.is_del=0
+		]]>
+		
+		<if test="start!=null and start!=''">
+			<![CDATA[
+				and DATE_FORMAT(m.create_date,'%Y-%m-%d')>=DATE_FORMAT(#{start},'%Y-%m-%d')
+			]]>
+		</if>
+		
+		<if test="end!=null and end!=''">
+			<![CDATA[
+				and DATE_FORMAT(m.create_date,'%Y-%m-%d')<=DATE_FORMAT(#{end},'%Y-%m-%d')
+			]]>
+		</if>
+		
+		<![CDATA[
+			ORDER BY m.create_date DESC
+		]]>
+	</select>
+	
+	<update id="banMember">
+		<![CDATA[
+			update member set status = 1 where id = #{0}
+		]]>
+	</update>
+	
+	
+	
+	
+	
+	
+	
+</mapper>
